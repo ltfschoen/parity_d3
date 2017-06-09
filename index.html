@@ -7,24 +7,44 @@
 		<script>
 		 	function draw(data) { 
 				"use strict";
-				// d3
+				let div = d3.select(this);
+				console.log(data);
+				// debugger;
+
+				d3.select("body")
+					.append("ul")
+					.selectAll("li")
+					.data(data)
+					.enter()
+					.append("li")
+					.text(function (d) {
+					  return d.headline + ": " + 
+					  	d.essentials.industry;
+					});
+
+			  d3.selectAll("li")
+				  .style("font-weight", function (d) {
+					  return (d.essentials.industry == "Blockchain") ? "bold" : "normal";
+				  })
 			}
 		</script>
 	</head>
 	<body>
-		<script>
-			document.addEventListener("DOMContentLoaded", function(event) {
-				var jsonOutput = new Array();
-				function iterate(obj) {
-					for (var property in obj) {
-				    if (obj.hasOwnProperty(property)) {
-			        jsonOutput[property] = obj[property];
-				    }
-					}
-				}
-				iterate(job);
-				d3.json(jsonOutput, draw);
-			});
-		</script>
+
 	</body>
+	<script>
+		document.addEventListener("DOMContentLoaded", function(event) {
+			var jsonOutput = [{}];
+			function iterate(obj) {
+				for (var property in obj) {
+			    if (obj.hasOwnProperty(property)) {
+		        jsonOutput[0][property] = obj[property];
+			    }
+				}
+			}
+			iterate(job);
+			// console.log(JSON.stringify(jsonOutput, null, 2));
+			draw(jsonOutput);
+		});
+	</script>
 </html>
