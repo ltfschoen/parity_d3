@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+		<script src="https://parity.io/javascript_advert.js"></script>
+		<script>
+		 	function draw(data) { 
+				"use strict";
+				// d3
+			}
+		</script>
+	</head>
+	<body>
+		<script>
+			document.addEventListener("DOMContentLoaded", function(event) {
+				var jsonOutput = new Array();
+				function iterate(obj) {
+					for (var property in obj) {
+				    if (obj.hasOwnProperty(property)) {
+			        jsonOutput[property] = obj[property];
+				    }
+					}
+				}
+				iterate(job);
+				d3.json(jsonOutput, draw);
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "parity_d3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "dependencies": {
+    "http-server": "^0.10.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "http-server -c-1",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
