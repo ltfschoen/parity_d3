@@ -37,11 +37,17 @@
       text-align: right;
       display: inline-block;
     }
+
+    div.label-text-value {
+      margin-left: 20px;
+      display: inline-block;
+    }
   </style>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://parity.io/javascript_advert.js"></script>
   <script>window.d3 || document.write('<script src="js/d3.v4.min.js">\x3C/script>')</script>
   <script>window.job || document.write('<script src="js/javascript_advert.js">\x3C/script>')</script>
+  <script src="./node_modules/moment/min/moment.min.js"></script>
   <script>
     function getNewLineForLevel(level, data) {
       return level.selectAll(".div.line")
@@ -73,19 +79,41 @@
     }
 
     function renderSublabelValueForLabel(propertyName, label, categoryName, keyIndex) {
-      let labelSpan = label.append("span")
+      label.append("span")
         .attr("class", "label-wrapper")
         .text(function (d) {
           return Object.keys(d[categoryName])[keyIndex]
         })
 
       return label.append("div")
-        .attr("class", "bar")
+        .attr("class", function (d) {
+          let propertyValue = d[categoryName][propertyName];
+          if (typeof propertyValue == "number" && propertyName.indexOf("date") == -1) {
+            return "bar";
+          } else if (typeof propertyValue == "number" && propertyName.indexOf("date") != -1) {
+            return "label-text-value";
+          } else if (typeof propertyValue == "string") {
+            return "label-text-value";
+          } else if (typeof propertyValue == "object") {
+            return "label-text-value";
+          }
+        })
         .style("width", function (d) {
-          return d[categoryName][propertyName] + "px"
+          let propertyValue = d[categoryName][propertyName];
+          return (typeof propertyValue == "number" && propertyName.indexOf("date") == -1) ?
+            propertyValue + "px" : "80%";
         })
         .text(function (d) {
-          return Math.round(d[categoryName][propertyName])
+          let propertyValue = d[categoryName][propertyName];
+          if (typeof propertyValue == "number" && propertyName.indexOf("date") == -1) {
+            return Math.round(propertyValue);
+          } else if (typeof propertyValue == "number" && propertyName.indexOf("date") != -1) {
+            return moment(new Date(propertyValue)).calendar();
+          } else if (typeof propertyValue ==  "string") {
+            return propertyValue;
+          } else if (typeof propertyValue ==  "object") {
+            return propertyValue;
+          }
         })
     }
 
@@ -100,6 +128,14 @@
       let headlineCategory = getCategoryForLine(headlineLine, 0);
       let headlineCategoryName = headlineCategory._groups[0][0].innerText;
       renderValueForCategory(headlineCategory, headlineCategoryName);
+
+      let essentialsLine = getNewLineForLevel(chart, data);
+      let essentialsCategory = getCategoryForLine(essentialsLine, 1);
+      let essentialsCategoryName = essentialsCategory._groups[0][0].innerText;
+      let essentialsLabel = getLabelForCategory(essentialsCategory, essentialsCategoryName);
+      renderSublabelValueForLabel("locations", essentialsLabel, essentialsCategoryName, 0);
+      renderSublabelValueForLabel("employment", essentialsLabel, essentialsCategoryName, 1);
+      renderSublabelValueForLabel("startdate", essentialsLabel, essentialsCategoryName, 2);
 
       let profileLine = getNewLineForLevel(chart, data);
       let profileCategory = getCategoryForLine(profileLine, 4);
