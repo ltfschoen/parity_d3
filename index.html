@@ -13,6 +13,10 @@
 				line-height: 3em;
 				margin-bottom: 2px;
 			}
+			span.label-wrapper {
+				width: 100px;
+				display: inline-block;
+			}
 			div.label {
 				margin-left: 40px;
 			}
@@ -20,11 +24,8 @@
 				margin-left: 20px;
 				background-color: DarkRed;
 				color: white;
-				/*height: 3em;*/
-				/*line-height:3em;*/
-				padding-right:1em;
-				/*margin-bottom:2px;*/
-				text-align:right;
+				padding-right: 1em;
+				text-align: right;
 				outline: 1px solid black;
 				display: inline-block;
 			}
@@ -48,13 +49,16 @@
 					.text(function(d) { return Object.keys(d)[keyIndex] })
 			}
 
-			function getLabelForCategory(category, categoryName, keyIndex) {
+			function getLabelForCategory(category, categoryName) {
 				return category.append("div")
 					.attr("class", "label")
-					.text(function(d) { return Object.keys(d[categoryName])[keyIndex] })
 			}
 
-			function renderPropertyForLabel(propertyName, label, categoryName) {
+			function renderPropertyForLabel(propertyName, label, categoryName, keyIndex) {
+				let labelSpan = label.append("span")
+					.attr("class", "label-wrapper")
+					.text(function(d) { return Object.keys(d[categoryName])[keyIndex] })
+
 				return label.append("div")
 					.attr("class", "bar")
 					.style("width", function(d) { return d[categoryName][propertyName] + "px" })
@@ -71,15 +75,15 @@
 				let profileLine = getNewLineForLevel(chart, data);
 				let profileCategory = getCategoryForLine(profileLine, 4);
 				let profileCategoryName = profileCategory._groups[0][0].innerText;
-				let profileLabel = getLabelForCategory(profileCategory, profileCategoryName, 0);
-				renderPropertyForLabel("newfeatures", profileLabel, profileCategoryName);
+				let profileLabel = getLabelForCategory(profileCategory, profileCategoryName);
+				renderPropertyForLabel("newfeatures", profileLabel, profileCategoryName, 0);
 
 
 			  let specsLine = getNewLineForLevel(chart, data);
 				let specsCategory = getCategoryForLine(specsLine, 3);
 			  let specsCategoryName = specsCategory._groups[0][0].innerText;
-				let specsLabel = getLabelForCategory(specsCategory, specsCategoryName, 0);
-			  renderPropertyForLabel("workload", specsLabel, specsCategoryName);
+				let specsLabel = getLabelForCategory(specsCategory, specsCategoryName);
+			  renderPropertyForLabel("workload", specsLabel, specsCategoryName, 0);
 
 			}
 		</script>
