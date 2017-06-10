@@ -225,6 +225,17 @@
       renderSubSublabelValueForLabel("teamsize", "min", data, essentialsTeamsizeSublabel, essentialsLabel, essentialsCategoryName, 6, 0);
       renderSubSublabelValueForLabel("teamsize", "max", data, essentialsTeamsizeSublabel, essentialsLabel, essentialsCategoryName, 6, 1);
 
+      let methodologyLine = getNewLineForLevel(chart, data);
+      let methodologyCategory = getCategoryForLine(methodologyLine, 2);
+      let methodologyCategoryName = methodologyCategory._groups[0][0].innerText;
+      let methodologyLabel = getLabelForCategory(methodologyCategory, methodologyCategoryName);
+      let methodologyKey = data[0][methodologyCategoryName];
+      let methodologyIndex = 0;
+      for (let k in methodologyKey) {
+        renderSublabelValueForLabel(k, data, methodologyLabel, methodologyCategoryName, methodologyIndex);
+        methodologyIndex++;
+      }
+
       let profileLine = getNewLineForLevel(chart, data);
       let profileCategory = getCategoryForLine(profileLine, 4);
       let profileCategoryName = profileCategory._groups[0][0].innerText;
