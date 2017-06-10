@@ -67,6 +67,39 @@
       width: 100%;
       display: inline-block;
     }
+
+    @media only screen
+    and (min-device-width : 320px)
+    and (max-device-width : 480px) {
+      div.category,
+      div.amount-bar {
+        text-align: left;
+      }
+
+      div.category,
+      div.label-text-value {
+        width: 150px;
+      }
+    }
+
+    @media only screen
+    and (min-device-width : 481px)
+    and (max-device-width : 1024px) {
+      div.category,
+      div.amount-bar {
+        text-align: left;
+      }
+
+      div.category,
+      div.label-text-value {
+        width: 300px;
+      }
+    }
+
+    @media only screen
+    and (min-width : 1224px) {
+      /* Styles */
+    }
   </style>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://parity.io/javascript_advert.js"></script>
@@ -233,66 +266,20 @@
         .append("div")
         .attr("class", "chart")
 
-      let headlineLine = getNewLineForLevel(chart, data);
-      let headlineCategory = getCategoryForLine(headlineLine, 0);
-      let headlineCategoryName = headlineCategory._groups[0][0].innerText;
-      renderValueForCategory(headlineCategory, headlineCategoryName);
-
-      let essentialsLine = getNewLineForLevel(chart, data);
-      let essentialsCategory = getCategoryForLine(essentialsLine, 1);
-      let essentialsCategoryName = essentialsCategory._groups[0][0].innerText;
-      let essentialsLabel = getLabelForCategory(essentialsCategory, essentialsCategoryName);
-      let essentialsKey = data[0][essentialsCategoryName];
-      renderLevelsForCategory(data, essentialsKey, essentialsLabel, essentialsCategory, essentialsCategoryName);
-
-      let methodologyLine = getNewLineForLevel(chart, data);
-      let methodologyCategory = getCategoryForLine(methodologyLine, 2);
-      let methodologyCategoryName = methodologyCategory._groups[0][0].innerText;
-      let methodologyLabel = getLabelForCategory(methodologyCategory, methodologyCategoryName);
-      let methodologyKey = data[0][methodologyCategoryName];
-      renderLevelsForCategory(data, methodologyKey, methodologyLabel, methodologyCategory, methodologyCategoryName);
-
-      let specsLine = getNewLineForLevel(chart, data);
-      let specsCategory = getCategoryForLine(specsLine, 3);
-      let specsCategoryName = specsCategory._groups[0][0].innerText;
-      let specsLabel = getLabelForCategory(specsCategory, specsCategoryName);
-      let specsKey = data[0][specsCategoryName];
-      renderLevelsForCategory(data, specsKey, specsLabel, specsCategory, specsCategoryName);
-
-      let profileLine = getNewLineForLevel(chart, data);
-      let profileCategory = getCategoryForLine(profileLine, 4);
-      let profileCategoryName = profileCategory._groups[0][0].innerText;
-      let profileLabel = getLabelForCategory(profileCategory, profileCategoryName);
-      let profileKey = data[0][profileCategoryName];
-      renderLevelsForCategory(data, profileKey, profileLabel, profileCategory, profileCategoryName);
-
-      let equipmentLine = getNewLineForLevel(chart, data);
-      let equipmentCategory = getCategoryForLine(equipmentLine, 5);
-      let equipmentCategoryName = equipmentCategory._groups[0][0].innerText;
-      let equipmentLabel = getLabelForCategory(equipmentCategory, equipmentCategoryName);
-      let equipmentKey = data[0][equipmentCategoryName];
-      renderLevelsForCategory(data, equipmentKey, equipmentLabel, equipmentCategory, equipmentCategoryName);
-
-      let technologiesLine = getNewLineForLevel(chart, data);
-      let technologiesCategory = getCategoryForLine(technologiesLine, 6);
-      let technologiesCategoryName = technologiesCategory._groups[0][0].innerText;
-      let technologiesLabel = getLabelForCategory(technologiesCategory, technologiesCategoryName);
-      let technologiesKey = data[0][technologiesCategoryName];
-      renderLevelsForCategory(data, technologiesKey, technologiesLabel, technologiesCategory, technologiesCategoryName);
-
-      let otherLine = getNewLineForLevel(chart, data);
-      let otherCategory = getCategoryForLine(otherLine, 7);
-      let otherCategoryName = otherCategory._groups[0][0].innerText;
-      let otherLabel = getLabelForCategory(otherCategory, otherCategoryName);
-      let otherKey = data[0][otherCategoryName];
-      renderLevelsForCategory(data, otherKey, otherLabel, otherCategory, otherCategoryName);
-
-      let miscLine = getNewLineForLevel(chart, data);
-      let miscCategory = getCategoryForLine(miscLine, 8);
-      let miscCategoryName = miscCategory._groups[0][0].innerText;
-      let miscLabel = getLabelForCategory(miscCategory, miscCategoryName);
-      let miscKey = data[0][miscCategoryName];
-      renderLevelsForCategory(data, miscKey, miscLabel, miscCategory, miscCategoryName);
+      let i = 0;
+      for (let categoryKey in data[0]) {
+        let line = getNewLineForLevel(chart, data);
+        let category = getCategoryForLine(line, i);
+        let categoryName = category._groups[0][0].innerText;
+        let label = getLabelForCategory(category, categoryName);
+        let key = data[0][categoryName];
+        if (isObject(key) && !isArray(key)) {
+          renderLevelsForCategory(data, key, label, category, categoryName);
+        } else {
+          renderValueForCategory(category, categoryName);
+        }
+        i++
+      }
     }
   </script>
 </head>
