@@ -135,32 +135,81 @@ function processRender(label, propertyValue, propertyName, parentName) {
       } else if (typeof propertyValue === "number" && propertyName.indexOf("date") != -1) {
         return moment(new Date(propertyValue)).calendar();
       } else if (typeof propertyValue ===  "string") {
-        return propertyValue.split(',').join(', ');
+        if (propertyValue == "Expert") {
+          for (let i = 0; i < 5; i++) {
+            label.append("text")
+              .attr("style","font-family:FontAwesome; color:orange")
+              .attr('font-size', "50px" )
+              .attr("x", 440)
+              .attr("y", 440)
+              .text(function(d) { return '\uf005' });
+          }
+        } else if (propertyValue == "Good") {
+          for (let i = 0; i < 3; i++) {
+            label.append("text")
+              .attr("style", "font-family:FontAwesome; color:gold")
+              .attr('font-size', "50px")
+              .attr("x", 440)
+              .attr("y", 440)
+              .text(function (d) { return '\uf005' });
+          }
+          for (let i = 0; i < 2; i++) {
+            label.append("text")
+              .attr("style", "font-family:FontAwesome; color:white")
+              .attr('font-size', "50px")
+              .attr("x", 440)
+              .attr("y", 440)
+              .text(function (d) { return '\uf006' });
+          }
+        } else if (propertyValue == "Familiar") {
+          for (let i = 0; i < 2; i++) {
+            label.append("text")
+              .attr("style", "font-family:FontAwesome; color:orange")
+              .attr('font-size', "50px")
+              .attr("x", 440)
+              .attr("y", 440)
+              .text(function (d) { return '\uf005' });
+          }
+          for (let i = 0; i < 1; i++) {
+            label.append("text")
+              .attr("style","font-family:FontAwesome; color:gold")
+              .attr('font-size', "50px" )
+              .attr("x", 440)
+              .attr("y", 440)
+              .text(function(d) { return '\uf123' });
+          }
+          for (let i = 0; i < 2; i++) {
+            label.append("text")
+              .attr("style", "font-family:FontAwesome; color:white")
+              .attr('font-size', "50px")
+              .attr("x", 440)
+              .attr("y", 440)
+              .text(function (d) { return '\uf006' });
+          }
+        } else {
+          return propertyValue.split(',').join(', ');
+        }
       } else if (typeof propertyValue ===  "object") {
         return propertyValue.join(', ');
       } else if (typeof propertyValue ===  "boolean") {
-        // return propertyValue;
+        if (propertyValue == true) {
+          label.append("text")
+            .attr("style","font-family:FontAwesome; color:green")
+            .attr('font-size', "50px" )
+            .attr("x", 440)
+            .attr("y", 440)
+            .text(function(d) { return '\uf00c' });
+        } else {
+          label.append("text")
+            .attr("style","font-family:FontAwesome; color:red")
+            .attr('font-size', "50px" )
+            .attr("x", 440)
+            .attr("y", 440)
+            .text(function(d) { return '\uf00d' });
+        }
       }
     })
 
-  if (typeof propertyValue ===  "boolean") {
-    if (propertyValue == true) {
-      label.append("text")
-        .attr("style","font-family:FontAwesome; color:green")
-        .attr('font-size', "50px" )
-        .attr("x", 440)
-        .attr("y", 440)
-        .text(function(d) { return '\uf00c' });
-    } else {
-      label.append("text")
-        .attr("style","font-family:FontAwesome; color:red")
-        .attr('font-size', "50px" )
-        .attr("x", 440)
-        .attr("y", 440)
-        .text(function(d) { return '\uf00d' });
-    }
-
-  }
 }
 
 function draw(data) {
