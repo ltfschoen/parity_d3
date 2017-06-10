@@ -47,6 +47,16 @@
       display: inline-block;
     }
 
+    div.amount-bar {
+      margin-left: 20px;
+      background-color: Gold;
+      border-radius: 20px;
+      color: white;
+      padding-right: 1em;
+      text-align: right;
+      display: inline-block;
+    }
+
     div.label-text-value {
       margin-left: 20px;
       /*padding-right: 10em;*/
@@ -120,6 +130,9 @@
           return Object.keys(d[categoryName])[keyIndex];
         })
 
+      if (isObject(propertyValue) && !isArray()) {
+        return
+      }
       return processRender(label, propertyValue, propertyName);
     }
 
@@ -140,19 +153,29 @@
     function processRender(label, propertyValue, propertyName) {
       return label.append("div")
         .attr("class", function (d) {
-          if (typeof propertyValue === "number" && propertyName.indexOf("date") == -1) {
+          if (typeof propertyValue === "number" && propertyName.indexOf("date") == -1 && propertyName.indexOf("amount") == -1) {
             return "bar";
+          } else if (typeof propertyValue === "number" && propertyName.indexOf("date") == -1 && propertyName.indexOf("amount") != -1) {
+            return "amount-bar"
           } else if (typeof propertyValue === "number" && propertyName.indexOf("date") != -1) {
             return "label-text-value";
           } else if (typeof propertyValue === "string") {
             return "label-text-value";
           } else if (typeof propertyValue === "object") {
             return "label-text-value";
+          } else if (typeof propertyValue === "boolean") {
+            return "label-text-value";
           }
         })
         .style("width", function (d) {
-          return (typeof propertyValue === "number" && propertyName.indexOf("date") == -1) ?
-            propertyValue + "px" : "";
+          if (typeof propertyValue === "number" && propertyName.indexOf("date") == -1 && propertyName.indexOf("amount") == -1) {
+            return propertyValue + "px";
+          } else if (typeof propertyValue === "number" && propertyName.indexOf("date") == -1 && propertyName.indexOf("amount") != -1) {
+            return propertyValue / 100 + "px";
+          } else {
+            return "";
+          }
+
         })
         .text(function (d) {
           if (typeof propertyValue === "number" && propertyName.indexOf("date") == -1) {
@@ -162,6 +185,8 @@
           } else if (typeof propertyValue ===  "string") {
             return propertyValue;
           } else if (typeof propertyValue ===  "object") {
+            return propertyValue;
+          } else if (typeof propertyValue ===  "boolean") {
             return propertyValue;
           }
         })
@@ -186,8 +211,19 @@
       renderSublabelValueForLabel("locations", data, essentialsLabel, essentialsCategoryName, 0);
       renderSublabelValueForLabel("employment", data, essentialsLabel, essentialsCategoryName, 1);
       renderSublabelValueForLabel("startdate", data, essentialsLabel, essentialsCategoryName, 2);
-      let essentialsSublabel = getSublabelOfLabelForCategory(essentialsLabel, essentialsCategory, essentialsCategoryName);
-      renderSubSublabelValueForLabel("salary", "status", data, essentialsSublabel, essentialsLabel, essentialsCategoryName, 3, 0);
+      renderSublabelValueForLabel("salary", data, essentialsLabel, essentialsCategoryName, 3);
+      let essentialsSalarySublabel = getSublabelOfLabelForCategory(essentialsLabel, essentialsCategory, essentialsCategoryName);
+      renderSubSublabelValueForLabel("salary", "status", data, essentialsSalarySublabel, essentialsLabel, essentialsCategoryName, 3, 0);
+      renderSubSublabelValueForLabel("salary", "interval", data, essentialsSalarySublabel, essentialsLabel, essentialsCategoryName, 3, 1);
+      renderSubSublabelValueForLabel("salary", "currency", data, essentialsSalarySublabel, essentialsLabel, essentialsCategoryName, 3, 2);
+      renderSubSublabelValueForLabel("salary", "amount", data, essentialsSalarySublabel, essentialsLabel, essentialsCategoryName, 3, 3);
+      renderSubSublabelValueForLabel("salary", "stockoptions", data, essentialsSalarySublabel, essentialsLabel, essentialsCategoryName, 3, 4);
+      renderSublabelValueForLabel("industry", data, essentialsLabel, essentialsCategoryName, 4);
+      renderSublabelValueForLabel("companysize", data, essentialsLabel, essentialsCategoryName, 5);
+      renderSublabelValueForLabel("teamsize", data, essentialsLabel, essentialsCategoryName, 6);
+      let essentialsTeamsizeSublabel = getSublabelOfLabelForCategory(essentialsLabel, essentialsCategory, essentialsCategoryName);
+      renderSubSublabelValueForLabel("teamsize", "min", data, essentialsTeamsizeSublabel, essentialsLabel, essentialsCategoryName, 6, 0);
+      renderSubSublabelValueForLabel("teamsize", "max", data, essentialsTeamsizeSublabel, essentialsLabel, essentialsCategoryName, 6, 1);
 
       let profileLine = getNewLineForLevel(chart, data);
       let profileCategory = getCategoryForLine(profileLine, 4);
