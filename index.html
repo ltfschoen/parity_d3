@@ -11,8 +11,8 @@
 
     div.category {
       margin-left: 20px;
-      line-height: 3em;
-      margin-bottom: 2px;
+      line-height: 1em;
+      margin-bottom: 15px;
     }
 
     div.category-text-value {
@@ -40,6 +40,12 @@
 
     div.label-text-value {
       margin-left: 20px;
+      /*padding-right: 10em;*/
+      display: inline-block;
+    }
+
+    span.spacer {
+      width: 100%;
       display: inline-block;
     }
   </style>
@@ -71,6 +77,9 @@
     }
 
     function renderValueForCategory(category, categoryName) {
+      category.append("span")
+        .attr("class", "spacer")
+
       return category.append("div")
         .attr("class", "category-text-value")
         .text(function (d) {
@@ -79,6 +88,8 @@
     }
 
     function renderSublabelValueForLabel(propertyName, label, categoryName, keyIndex) {
+      label.append("span")
+        .attr("class", "spacer")
       label.append("span")
         .attr("class", "label-wrapper")
         .text(function (d) {
@@ -101,7 +112,7 @@
         .style("width", function (d) {
           let propertyValue = d[categoryName][propertyName];
           return (typeof propertyValue == "number" && propertyName.indexOf("date") == -1) ?
-            propertyValue + "px" : "80%";
+            propertyValue + "px" : "";
         })
         .text(function (d) {
           let propertyValue = d[categoryName][propertyName];
