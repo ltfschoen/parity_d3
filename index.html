@@ -263,7 +263,36 @@
       let profileCategory = getCategoryForLine(profileLine, 4);
       let profileCategoryName = profileCategory._groups[0][0].innerText;
       let profileLabel = getLabelForCategory(profileCategory, profileCategoryName);
-      renderSublabelValueForLabel("newfeatures", data, profileLabel, profileCategoryName, 0);
+      let profileKey = data[0][profileCategoryName];
+      renderLevelsForCategory(data, profileKey, profileLabel, profileCategory, profileCategoryName);
+
+      let equipmentLine = getNewLineForLevel(chart, data);
+      let equipmentCategory = getCategoryForLine(equipmentLine, 5);
+      let equipmentCategoryName = equipmentCategory._groups[0][0].innerText;
+      let equipmentLabel = getLabelForCategory(equipmentCategory, equipmentCategoryName);
+      let equipmentKey = data[0][equipmentCategoryName];
+      renderLevelsForCategory(data, equipmentKey, equipmentLabel, equipmentCategory, equipmentCategoryName);
+
+      let technologiesLine = getNewLineForLevel(chart, data);
+      let technologiesCategory = getCategoryForLine(technologiesLine, 6);
+      let technologiesCategoryName = technologiesCategory._groups[0][0].innerText;
+      let technologiesLabel = getLabelForCategory(technologiesCategory, technologiesCategoryName);
+      let technologiesKey = data[0][technologiesCategoryName];
+      renderLevelsForCategory(data, technologiesKey, technologiesLabel, technologiesCategory, technologiesCategoryName);
+
+      let otherLine = getNewLineForLevel(chart, data);
+      let otherCategory = getCategoryForLine(otherLine, 7);
+      let otherCategoryName = otherCategory._groups[0][0].innerText;
+      let otherLabel = getLabelForCategory(otherCategory, otherCategoryName);
+      let otherKey = data[0][otherCategoryName];
+      renderLevelsForCategory(data, otherKey, otherLabel, otherCategory, otherCategoryName);
+
+      let miscLine = getNewLineForLevel(chart, data);
+      let miscCategory = getCategoryForLine(miscLine, 8);
+      let miscCategoryName = miscCategory._groups[0][0].innerText;
+      let miscLabel = getLabelForCategory(miscCategory, miscCategoryName);
+      let miscKey = data[0][miscCategoryName];
+      renderLevelsForCategory(data, miscKey, miscLabel, miscCategory, miscCategoryName);
     }
   </script>
 </head>
