@@ -74,6 +74,22 @@
   <script>window.job || document.write('<script src="js/javascript_advert.js">\x3C/script>')</script>
   <script src="./node_modules/moment/min/moment.min.js"></script>
   <script>
+    let barLabels = ["profile"];
+    let barAmountLabels = ["amount"];
+    let unfitableLabels = ["date", "workweek", "from", "to"];
+
+    function isBarLabel(propertyName, parentName) {
+      return (barLabels.indexOf(propertyName) != -1 || barLabels.indexOf(parentName) != -1);
+    }
+
+    function isBarAmountLabel(propertyName) {
+      return barAmountLabels.indexOf(propertyName) != -1;
+    }
+
+    function isUnfitableLabel(propertyName, parentName) {
+      return (unfitableLabels.indexOf(propertyName) != -1 || unfitableLabels.indexOf(parentName) != -1);;
+    }
+
     function isObject(obj) {
       return obj && (typeof obj  === "object");
     }
@@ -133,7 +149,7 @@
       if (isObject(propertyValue) && !isArray(propertyValue)) {
         return
       }
-      return processRender(label, propertyValue, propertyName);
+      return processRender(label, propertyValue, propertyName, categoryName);
     }
 
     function renderSubSublabelValueForLabel(propertyName, subPropertyName, data, subLabel, label, categoryName, keyIndex, subKeyIndex) {
@@ -147,21 +163,17 @@
           return Object.keys(d[categoryName][propertyName])[subKeyIndex];
         })
 
-      return processRender(subLabel, subPropertyValue, subPropertyName);
+      return processRender(subLabel, subPropertyValue, subPropertyName, propertyName);
     }
 
-    function processRender(label, propertyValue, propertyName) {
+    function processRender(label, propertyValue, propertyName, parentName) {
       return label.append("div")
         .attr("class", function (d) {
-          if (typeof propertyValue === "number" &&
-            propertyName.indexOf("date") == -1 &&
-            propertyName.indexOf("amount") == -1) {
+          if (typeof propertyValue === "number" && isBarLabel(propertyName, parentName) ) {
             return "bar";
-          } else if (typeof propertyValue === "number" &&
-            propertyName.indexOf("amount") != -1) {
+          } else if (typeof propertyValue === "number" && isBarAmountLabel(propertyName)) {
             return "amount-bar"
-          } else if (typeof propertyValue === "number" &&
-            (propertyName.indexOf("date") != -1 || propertyName.indexOf("workweek") != -1) ) {
+          } else if (typeof propertyValue === "number") {
             return "label-text-value";
           } else if (typeof propertyValue === "string") {
             return "label-text-value";
@@ -172,19 +184,12 @@
           }
         })
         .style("width", function (d) {
-          if (typeof propertyValue === "number" &&
-            propertyName.indexOf("date") == -1 &&
-            propertyName.indexOf("amount") == -1 &&
-            propertyName.indexOf("workweek") == -1 &&
-            propertyName.indexOf("from") == -1 &&
-            propertyName.indexOf("to") == -1) {
-            return propertyValue + "px";
-          } else if (typeof propertyValue === "number" &&
-            propertyName.indexOf("amount") != -1) {
-            return propertyValue / 100 + "px";
-          } else if (typeof propertyValue === "number" &&
-            (propertyName.indexOf("workweek") != -1 || propertyName.indexOf("from") != -1 || propertyName.indexOf("to") != -1)) {
+          if (typeof propertyValue === "number" && isUnfitableLabel(propertyName, parentName)) {
             return "";
+          } else if (typeof propertyValue === "number" && isBarLabel(propertyName, parentName)) {
+            return propertyValue + "px";
+          } else if (typeof propertyValue === "number" && isBarAmountLabel(propertyName)) {
+            return propertyValue / 100 + "px";
           } else {
             return "";
           }
