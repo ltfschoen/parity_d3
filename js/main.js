@@ -244,4 +244,8 @@
     }
   }
 
+  exports.job = {
+    Job: Job
+  }
+
 })(this);
