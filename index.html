@@ -24,8 +24,17 @@
       display: inline-block;
     }
 
+    span.sub-label-wrapper {
+      width: 100px;
+      display: inline-block;
+    }
+
     div.label {
       margin-left: 40px;
+    }
+
+    div.sub-label {
+      margin-left: 60px;
     }
 
     div.bar {
@@ -55,6 +64,14 @@
   <script>window.job || document.write('<script src="js/javascript_advert.js">\x3C/script>')</script>
   <script src="./node_modules/moment/min/moment.min.js"></script>
   <script>
+    function isObject(obj) {
+      return obj && (typeof obj  === "object");
+    }
+
+    function isArray(obj) {
+      return isObject(obj) && (obj instanceof Array);
+    }
+
     function getNewLineForLevel(level, data) {
       return level.selectAll(".div.line")
         .data(data)
@@ -76,6 +93,11 @@
         .attr("class", "label")
     }
 
+    function getSublabelOfLabelForCategory(subcategory, category, categoryName) {
+      return subcategory.append("div")
+        .attr("class", "sub-label")
+    }
+
     function renderValueForCategory(category, categoryName) {
       category.append("span")
         .attr("class", "spacer")
@@ -87,42 +109,59 @@
         })
     }
 
-    function renderSublabelValueForLabel(propertyName, label, categoryName, keyIndex) {
+    function renderSublabelValueForLabel(propertyName, data, label, categoryName, keyIndex) {
+      let propertyValue = data[0][categoryName][propertyName];
+
       label.append("span")
         .attr("class", "spacer")
       label.append("span")
         .attr("class", "label-wrapper")
         .text(function (d) {
-          return Object.keys(d[categoryName])[keyIndex]
+          return Object.keys(d[categoryName])[keyIndex];
         })
 
+      return processRender(label, propertyValue, propertyName);
+    }
+
+    function renderSubSublabelValueForLabel(propertyName, subPropertyName, data, subLabel, label, categoryName, keyIndex, subKeyIndex) {
+      let subPropertyValue = data[0][categoryName][propertyName][subPropertyName];
+
+      subLabel.append("span")
+        .attr("class", "spacer")
+      subLabel.append("span")
+        .attr("class", "sub-label-wrapper")
+        .text(function (d) {
+          return Object.keys(d[categoryName][propertyName])[subKeyIndex];
+        })
+
+      return processRender(subLabel, subPropertyValue, subPropertyName);
+    }
+
+    function processRender(label, propertyValue, propertyName) {
       return label.append("div")
         .attr("class", function (d) {
-          let propertyValue = d[categoryName][propertyName];
-          if (typeof propertyValue == "number" && propertyName.indexOf("date") == -1) {
+          if (typeof propertyValue === "number" && propertyName.indexOf("date") == -1) {
             return "bar";
-          } else if (typeof propertyValue == "number" && propertyName.indexOf("date") != -1) {
+          } else if (typeof propertyValue === "number" && propertyName.indexOf("date") != -1) {
             return "label-text-value";
-          } else if (typeof propertyValue == "string") {
+          } else if (typeof propertyValue === "string") {
             return "label-text-value";
-          } else if (typeof propertyValue == "object") {
+          } else if (typeof propertyValue === "object") {
             return "label-text-value";
           }
         })
         .style("width", function (d) {
-          let propertyValue = d[categoryName][propertyName];
-          return (typeof propertyValue == "number" && propertyName.indexOf("date") == -1) ?
+          return (typeof propertyValue === "number" && propertyName.indexOf("date") == -1) ?
             propertyValue + "px" : "";
         })
         .text(function (d) {
-          let propertyValue = d[categoryName][propertyName];
-          if (typeof propertyValue == "number" && propertyName.indexOf("date") == -1) {
+          if (typeof propertyValue === "number" && propertyName.indexOf("date") == -1) {
             return Math.round(propertyValue);
-          } else if (typeof propertyValue == "number" && propertyName.indexOf("date") != -1) {
+          } else if (typeof propertyValue === "number" && propertyName.indexOf("date") != -1) {
             return moment(new Date(propertyValue)).calendar();
-          } else if (typeof propertyValue ==  "string") {
+          } else if (typeof propertyValue ===  "string") {
             return propertyValue;
-          } else if (typeof propertyValue ==  "object") {
+          } else if (typeof propertyValue ===  "object") {
             return propertyValue;
           }
         })
@@ -144,21 +183,23 @@
       let essentialsCategory = getCategoryForLine(essentialsLine, 1);
       let essentialsCategoryName = essentialsCategory._groups[0][0].innerText;
       let essentialsLabel = getLabelForCategory(essentialsCategory, essentialsCategoryName);
-      renderSublabelValueForLabel("locations", essentialsLabel, essentialsCategoryName, 0);
-      renderSublabelValueForLabel("employment", essentialsLabel, essentialsCategoryName, 1);
-      renderSublabelValueForLabel("startdate", essentialsLabel, essentialsCategoryName, 2);
+      renderSublabelValueForLabel("locations", data, essentialsLabel, essentialsCategoryName, 0);
+      renderSublabelValueForLabel("employment", data, essentialsLabel, essentialsCategoryName, 1);
+      renderSublabelValueForLabel("startdate", data, essentialsLabel, essentialsCategoryName, 2);
+      let essentialsSublabel = getSublabelOfLabelForCategory(essentialsLabel, essentialsCategory, essentialsCategoryName);
+      renderSubSublabelValueForLabel("salary", "status", data, essentialsSublabel, essentialsLabel, essentialsCategoryName, 3, 0);
 
       let profileLine = getNewLineForLevel(chart, data);
       let profileCategory = getCategoryForLine(profileLine, 4);
       let profileCategoryName = profileCategory._groups[0][0].innerText;
       let profileLabel = getLabelForCategory(profileCategory, profileCategoryName);
-      renderSublabelValueForLabel("newfeatures", profileLabel, profileCategoryName, 0);
+      renderSublabelValueForLabel("newfeatures", data, profileLabel, profileCategoryName, 0);
 
       let specsLine = getNewLineForLevel(chart, data);
       let specsCategory = getCategoryForLine(specsLine, 3);
       let specsCategoryName = specsCategory._groups[0][0].innerText;
       let specsLabel = getLabelForCategory(specsCategory, specsCategoryName);
-      renderSublabelValueForLabel("workload", specsLabel, specsCategoryName, 0);
+      renderSublabelValueForLabel("workload", data, specsLabel, specsCategoryName, 0);
     }
   </script>
 </head>
