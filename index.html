@@ -164,7 +164,11 @@
       return category.append("div")
         .attr("class", "category-text-value")
         .text(function (d) {
-          return d[categoryName]
+          if (typeof d[categoryName] ===  "string") {
+            return d[categoryName].split(',').join(', ');
+          } else if (typeof d[categoryName] ===  "object") {
+            return d[categoryName].join(', ');
+          }
         })
     }
 
@@ -221,8 +225,6 @@
             return "";
           } else if (typeof propertyValue === "number" && isBarLabel(propertyName, parentName)) {
             return propertyValue + "px";
-          } else if (typeof propertyValue === "number" && isBarAmountLabel(propertyName)) {
-            return propertyValue / 100 + "px";
           } else {
             return "";
           }
@@ -234,9 +236,9 @@
           } else if (typeof propertyValue === "number" && propertyName.indexOf("date") != -1) {
             return moment(new Date(propertyValue)).calendar();
           } else if (typeof propertyValue ===  "string") {
-            return propertyValue;
+            return propertyValue.split(',').join(', ');
           } else if (typeof propertyValue ===  "object") {
-            return propertyValue;
+            return propertyValue.join(', ');
           } else if (typeof propertyValue ===  "boolean") {
             return propertyValue;
           }
