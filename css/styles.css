@@ -111,10 +111,12 @@ and (min-width : 1025px) {
   }
 
   span.label-wrapper {
+    color: DarkRed;
     width: 200px;
   }
 
   span.sub-label-wrapper {
+    color: Purple;
     width: 200px;
   }
 
