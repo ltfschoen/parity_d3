@@ -10,6 +10,10 @@
     }
 
     div.category {
+      color: White;
+      background-color: Black;
+      padding: 15px;
+      border-radius: 10px;
       margin-left: 20px;
       line-height: 1em;
       margin-bottom: 15px;
@@ -29,11 +33,23 @@
       display: inline-block;
     }
 
+    div.category-text-value,
+    div.label {
+      color: White;
+      background-color: DarkGrey;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
     div.label {
       margin-left: 40px;
     }
 
     div.sub-label {
+      color: White;
+      background-color: LightGrey;
+      padding: 15px;
+      border-radius: 10px;
       margin-left: 60px;
     }
 
@@ -43,7 +59,7 @@
       border-radius: 20px;
       color: white;
       padding-right: 1em;
-      text-align: right;
+      text-align: center;
       display: inline-block;
     }
 
@@ -53,7 +69,7 @@
       border-radius: 20px;
       color: white;
       padding-right: 1em;
-      text-align: right;
+      text-align: center;
       display: inline-block;
     }
 
@@ -71,34 +87,58 @@
     @media only screen
     and (min-device-width : 320px)
     and (max-device-width : 480px) {
-      div.category,
-      div.amount-bar {
-        text-align: left;
-      }
-
-      div.category,
-      div.label-text-value {
-        width: 150px;
-      }
     }
 
     @media only screen
     and (min-device-width : 481px)
     and (max-device-width : 1024px) {
-      div.category,
-      div.amount-bar {
-        text-align: left;
-      }
-
-      div.category,
-      div.label-text-value {
-        width: 300px;
+      div.chart {
+        font-size: 1.0em;
       }
     }
 
     @media only screen
-    and (min-width : 1224px) {
-      /* Styles */
+    and (min-width : 1025px) {
+      div.chart {
+        font-size: 1.5em;
+      }
+
+      div.category {
+        margin-left: 40px;
+        margin-bottom: 30px;
+      }
+
+      div.category-text-value {
+        margin-left: 80px;
+      }
+
+      span.label-wrapper {
+        width: 200px;
+      }
+
+      span.sub-label-wrapper {
+        width: 200px;
+      }
+
+      div.label {
+        margin-left: 80px;
+      }
+
+      div.sub-label {
+        margin-left: 120px;
+      }
+
+      div.bar {
+        margin-left: 40px;
+      }
+
+      div.amount-bar {
+        margin-left: 40px;
+      }
+
+      div.label-text-value {
+        margin-left: 40px;
+      }
     }
   </style>
   <script src="https://d3js.org/d3.v4.min.js"></script>
