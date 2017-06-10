@@ -153,11 +153,15 @@
     function processRender(label, propertyValue, propertyName) {
       return label.append("div")
         .attr("class", function (d) {
-          if (typeof propertyValue === "number" && propertyName.indexOf("date") == -1 && propertyName.indexOf("amount") == -1) {
+          if (typeof propertyValue === "number" &&
+            propertyName.indexOf("date") == -1 &&
+            propertyName.indexOf("amount") == -1) {
             return "bar";
-          } else if (typeof propertyValue === "number" && propertyName.indexOf("date") == -1 && propertyName.indexOf("amount") != -1) {
+          } else if (typeof propertyValue === "number" &&
+            propertyName.indexOf("amount") != -1) {
             return "amount-bar"
-          } else if (typeof propertyValue === "number" && propertyName.indexOf("date") != -1) {
+          } else if (typeof propertyValue === "number" &&
+            (propertyName.indexOf("date") != -1 || propertyName.indexOf("workweek") != -1) ) {
             return "label-text-value";
           } else if (typeof propertyValue === "string") {
             return "label-text-value";
@@ -168,10 +172,19 @@
           }
         })
         .style("width", function (d) {
-          if (typeof propertyValue === "number" && propertyName.indexOf("date") == -1 && propertyName.indexOf("amount") == -1) {
+          if (typeof propertyValue === "number" &&
+            propertyName.indexOf("date") == -1 &&
+            propertyName.indexOf("amount") == -1 &&
+            propertyName.indexOf("workweek") == -1 &&
+            propertyName.indexOf("from") == -1 &&
+            propertyName.indexOf("to") == -1) {
             return propertyValue + "px";
-          } else if (typeof propertyValue === "number" && propertyName.indexOf("date") == -1 && propertyName.indexOf("amount") != -1) {
+          } else if (typeof propertyValue === "number" &&
+            propertyName.indexOf("amount") != -1) {
             return propertyValue / 100 + "px";
+          } else if (typeof propertyValue === "number" &&
+            (propertyName.indexOf("workweek") != -1 || propertyName.indexOf("from") != -1 || propertyName.indexOf("to") != -1)) {
+            return "";
           } else {
             return "";
           }
@@ -234,17 +247,18 @@
       let methodologyKey = data[0][methodologyCategoryName];
       renderLevelsForCategory(data, methodologyKey, methodologyLabel, methodologyCategory, methodologyCategoryName);
 
+      let specsLine = getNewLineForLevel(chart, data);
+      let specsCategory = getCategoryForLine(specsLine, 3);
+      let specsCategoryName = specsCategory._groups[0][0].innerText;
+      let specsLabel = getLabelForCategory(specsCategory, specsCategoryName);
+      let specsKey = data[0][specsCategoryName];
+      renderLevelsForCategory(data, specsKey, specsLabel, specsCategory, specsCategoryName);
+
       let profileLine = getNewLineForLevel(chart, data);
       let profileCategory = getCategoryForLine(profileLine, 4);
       let profileCategoryName = profileCategory._groups[0][0].innerText;
       let profileLabel = getLabelForCategory(profileCategory, profileCategoryName);
       renderSublabelValueForLabel("newfeatures", data, profileLabel, profileCategoryName, 0);
-
-      let specsLine = getNewLineForLevel(chart, data);
-      let specsCategory = getCategoryForLine(specsLine, 3);
-      let specsCategoryName = specsCategory._groups[0][0].innerText;
-      let specsLabel = getLabelForCategory(specsCategory, specsCategoryName);
-      renderSublabelValueForLabel("workload", data, specsLabel, specsCategoryName, 0);
     }
   </script>
 </head>
