@@ -2,27 +2,28 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<style>
-			div.chart{
+			div.chart {
 				font-family: sans-serif;
 				font-size: 0.7em;
 			}
-			div.label {
-				height: 3em;
+			div.category {
+				margin-left: 20px;
 				line-height: 3em;
-				padding-right: 1em;
 				margin-bottom: 2px;
-				float: left;
-				width: 20em;
-				text-align: right;
+			}
+			div.label {
+				margin-left: 40px;
 			}
 			div.bar {
+				margin-left: 20px;
 				background-color: DarkRed;
 				color: white;
-				height: 3em;
-				line-height:3em;
+				/*height: 3em;*/
+				/*line-height:3em;*/
 				padding-right:1em;
-				margin-bottom:2px;
+				/*margin-bottom:2px;*/
 				text-align:right;
 				outline: 1px solid black;
 				display: inline-block;
@@ -33,28 +34,53 @@
 		<script>window.d3 || document.write('<script src="js/d3.v4.min.js">\x3C/script>')</script>
 		<script>window.job || document.write('<script src="js/javascript_advert.js">\x3C/script>')</script>
 		<script>
+			function getNewLineForLevel(level, data) {
+				return level.selectAll(".div.line")
+					.data(data)
+					.enter()
+					.append("div")
+					.attr("class","line")
+			}
+
+			function getCategoryForLine(line, keyIndex) {
+				return line.append("div")
+					.attr("class", "category")
+					.text(function(d) { return Object.keys(d)[keyIndex] })
+			}
+
+			function getLabelForCategory(category, categoryName, keyIndex) {
+				return category.append("div")
+					.attr("class", "label")
+					.text(function(d) { return Object.keys(d[categoryName])[keyIndex] })
+			}
+
+			function renderPropertyForLabel(propertyName, label, categoryName) {
+				return label.append("div")
+					.attr("class", "bar")
+					.style("width", function(d) { return d[categoryName][propertyName] + "px" })
+					.text(function(d) { return Math.round(d[categoryName][propertyName]) })
+			}
+
 		 	function draw(data) { 
 				"use strict";
 
-				d3.select("body")
+				let chart = d3.select("body")
 					.append("div")
-				  .attr("class","chart")
-				  .selectAll(".div.line")
-				  .data(data)
-				  .enter()
-				  .append("div")
-				  .attr("class","line")
+				  .attr("class", "chart")
 
-			  d3.selectAll("div.line")
-				  .append("div")
-				  .attr("class","label")
-				  .text(function(d){return Object.keys(d.profile)[0]});
+				let profileLine = getNewLineForLevel(chart, data);
+				let profileCategory = getCategoryForLine(profileLine, 4);
+				let profileCategoryName = profileCategory._groups[0][0].innerText;
+				let profileLabel = getLabelForCategory(profileCategory, profileCategoryName, 0);
+				renderPropertyForLabel("newfeatures", profileLabel, profileCategoryName);
 
-			  d3.selectAll("div.line")
-				  .append("div")
-				  .attr("class","bar")
-				  .style("width", function(d){return d.profile.newfeatures + "px"})
-				  .text(function(d){ return Math.round(d.profile.newfeatures) });
+
+			  let specsLine = getNewLineForLevel(chart, data);
+				let specsCategory = getCategoryForLine(specsLine, 3);
+			  let specsCategoryName = specsCategory._groups[0][0].innerText;
+				let specsLabel = getLabelForCategory(specsCategory, specsCategoryName, 0);
+			  renderPropertyForLabel("workload", specsLabel, specsCategoryName);
+
 			}
 		</script>
 	</head>
