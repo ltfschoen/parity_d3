@@ -192,6 +192,22 @@
         })
     }
 
+    function renderLevelsForCategory(data, categoryKey, categoryLabel, category, categoryName) {
+      let i1 = 0;
+      for (let k1 in categoryKey) {
+        renderSublabelValueForLabel(k1, data, categoryLabel, categoryName, i1);
+        if (isObject(categoryKey[k1]) && !isArray(categoryKey[k1])) {
+          let i2 = 0;
+          for (let k2 in categoryKey[k1]) {
+            let sublabel = getSublabelOfLabelForCategory(categoryLabel, category, categoryName);
+            renderSubSublabelValueForLabel(k1, k2, data, sublabel, categoryLabel, categoryName, i1, i2);
+            i2++;
+          }
+        }
+        i1++;
+      }
+    }
+
     function draw(data) {
       "use strict";
 
@@ -209,30 +225,14 @@
       let essentialsCategoryName = essentialsCategory._groups[0][0].innerText;
       let essentialsLabel = getLabelForCategory(essentialsCategory, essentialsCategoryName);
       let essentialsKey = data[0][essentialsCategoryName];
-      let i1 = 0;
-      for (let k1 in essentialsKey) {
-        renderSublabelValueForLabel(k1, data, essentialsLabel, essentialsCategoryName, i1);
-        if (isObject(essentialsKey[k1]) && !isArray(essentialsKey[k1])) {
-          let i2 = 0;
-          for (let k2 in essentialsKey[k1]) {
-            let sublabel = getSublabelOfLabelForCategory(essentialsLabel, essentialsCategory, essentialsCategoryName);
-            renderSubSublabelValueForLabel(k1, k2, data, sublabel, essentialsLabel, essentialsCategoryName, i1, i2);
-            i2++;
-          }
-        }
-        i1++;
-      }
+      renderLevelsForCategory(data, essentialsKey, essentialsLabel, essentialsCategory, essentialsCategoryName);
 
       let methodologyLine = getNewLineForLevel(chart, data);
       let methodologyCategory = getCategoryForLine(methodologyLine, 2);
       let methodologyCategoryName = methodologyCategory._groups[0][0].innerText;
       let methodologyLabel = getLabelForCategory(methodologyCategory, methodologyCategoryName);
       let methodologyKey = data[0][methodologyCategoryName];
-      let methodologyIndex = 0;
-      for (let k in methodologyKey) {
-        renderSublabelValueForLabel(k, data, methodologyLabel, methodologyCategoryName, methodologyIndex);
-        methodologyIndex++;
-      }
+      renderLevelsForCategory(data, methodologyKey, methodologyLabel, methodologyCategory, methodologyCategoryName);
 
       let profileLine = getNewLineForLevel(chart, data);
       let profileCategory = getCategoryForLine(profileLine, 4);
