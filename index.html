@@ -1,123 +1,137 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<style>
-			div.chart {
-				font-family: sans-serif;
-				font-size: 0.7em;
-			}
-			div.category {
-				margin-left: 20px;
-				line-height: 3em;
-				margin-bottom: 2px;
-			}
-			div.category-text-value {
-				margin-left: 40px;
-			}
-			span.label-wrapper {
-				width: 100px;
-				display: inline-block;
-			}
-			div.label {
-				margin-left: 40px;
-			}
-			div.bar {
-				margin-left: 20px;
-				background-color: DarkRed;
-				border-radius: 20px;
-				color: white;
-				padding-right: 1em;
-				text-align: right;
-				display: inline-block;
-			}
-		</style>
-		<script src="https://d3js.org/d3.v4.min.js"></script>
-		<script src="https://parity.io/javascript_advert.js"></script>
-		<script>window.d3 || document.write('<script src="js/d3.v4.min.js">\x3C/script>')</script>
-		<script>window.job || document.write('<script src="js/javascript_advert.js">\x3C/script>')</script>
-		<script>
-			function getNewLineForLevel(level, data) {
-				return level.selectAll(".div.line")
-					.data(data)
-					.enter()
-					.append("div")
-					.attr("class","line")
-			}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    div.chart {
+      font-family: sans-serif;
+      font-size: 0.7em;
+    }
 
-			function getCategoryForLine(line, keyIndex) {
-				return line.append("div")
-					.attr("class", "category")
-					.text(function(d) { return Object.keys(d)[keyIndex] })
-			}
+    div.category {
+      margin-left: 20px;
+      line-height: 3em;
+      margin-bottom: 2px;
+    }
 
-			function getLabelForCategory(category, categoryName) {
-				return category.append("div")
-					.attr("class", "label")
-			}
+    div.category-text-value {
+      margin-left: 40px;
+    }
 
-			function renderValueForCategory(category, categoryName) {
-				return category.append("div")
-					.attr("class", "category-text-value")
-					.text(function(d) { return d[categoryName] })
-			}
+    span.label-wrapper {
+      width: 100px;
+      display: inline-block;
+    }
 
-			function renderSublabelValueForLabel(propertyName, label, categoryName, keyIndex) {
-				let labelSpan = label.append("span")
-					.attr("class", "label-wrapper")
-					.text(function(d) { return Object.keys(d[categoryName])[keyIndex] })
+    div.label {
+      margin-left: 40px;
+    }
 
-				return label.append("div")
-					.attr("class", "bar")
-					.style("width", function(d) { return d[categoryName][propertyName] + "px" })
-					.text(function(d) { return Math.round(d[categoryName][propertyName]) })
-			}
+    div.bar {
+      margin-left: 20px;
+      background-color: DarkRed;
+      border-radius: 20px;
+      color: white;
+      padding-right: 1em;
+      text-align: right;
+      display: inline-block;
+    }
+  </style>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://parity.io/javascript_advert.js"></script>
+  <script>window.d3 || document.write('<script src="js/d3.v4.min.js">\x3C/script>')</script>
+  <script>window.job || document.write('<script src="js/javascript_advert.js">\x3C/script>')</script>
+  <script>
+    function getNewLineForLevel(level, data) {
+      return level.selectAll(".div.line")
+        .data(data)
+        .enter()
+        .append("div")
+        .attr("class", "line")
+    }
 
-		 	function draw(data) { 
-				"use strict";
+    function getCategoryForLine(line, keyIndex) {
+      return line.append("div")
+        .attr("class", "category")
+        .text(function (d) {
+          return Object.keys(d)[keyIndex]
+        })
+    }
 
-				let chart = d3.select("body")
-					.append("div")
-				  .attr("class", "chart")
+    function getLabelForCategory(category, categoryName) {
+      return category.append("div")
+        .attr("class", "label")
+    }
 
-				let headlineLine = getNewLineForLevel(chart, data);
-			  let headlineCategory = getCategoryForLine(headlineLine, 0);
-			  let headlineCategoryName = headlineCategory._groups[0][0].innerText;
-			  renderValueForCategory(headlineCategory, headlineCategoryName);
+    function renderValueForCategory(category, categoryName) {
+      return category.append("div")
+        .attr("class", "category-text-value")
+        .text(function (d) {
+          return d[categoryName]
+        })
+    }
 
-				let profileLine = getNewLineForLevel(chart, data);
-				let profileCategory = getCategoryForLine(profileLine, 4);
-				let profileCategoryName = profileCategory._groups[0][0].innerText;
-				let profileLabel = getLabelForCategory(profileCategory, profileCategoryName);
-				renderSublabelValueForLabel("newfeatures", profileLabel, profileCategoryName, 0);
+    function renderSublabelValueForLabel(propertyName, label, categoryName, keyIndex) {
+      let labelSpan = label.append("span")
+        .attr("class", "label-wrapper")
+        .text(function (d) {
+          return Object.keys(d[categoryName])[keyIndex]
+        })
 
+      return label.append("div")
+        .attr("class", "bar")
+        .style("width", function (d) {
+          return d[categoryName][propertyName] + "px"
+        })
+        .text(function (d) {
+          return Math.round(d[categoryName][propertyName])
+        })
+    }
 
-			  let specsLine = getNewLineForLevel(chart, data);
-				let specsCategory = getCategoryForLine(specsLine, 3);
-			  let specsCategoryName = specsCategory._groups[0][0].innerText;
-				let specsLabel = getLabelForCategory(specsCategory, specsCategoryName);
-			  renderSublabelValueForLabel("workload", specsLabel, specsCategoryName, 0);
+    function draw(data) {
+      "use strict";
 
-			}
-		</script>
-	</head>
-	<body>
+      let chart = d3.select("body")
+        .append("div")
+        .attr("class", "chart")
 
-	</body>
-	<script>
-		document.addEventListener("DOMContentLoaded", function(event) {
-			let jsonOutput = [{}];
-			function iterate(obj) {
-				for (let property in obj) {
-			    if (obj.hasOwnProperty(property)) {
-		        jsonOutput[0][property] = obj[property];
-			    }
-				}
-			}
-			iterate(job);
-			// console.log(JSON.stringify(jsonOutput, null, 2));
-			draw(jsonOutput);
-		});
-	</script>
+      let headlineLine = getNewLineForLevel(chart, data);
+      let headlineCategory = getCategoryForLine(headlineLine, 0);
+      let headlineCategoryName = headlineCategory._groups[0][0].innerText;
+      renderValueForCategory(headlineCategory, headlineCategoryName);
+
+      let profileLine = getNewLineForLevel(chart, data);
+      let profileCategory = getCategoryForLine(profileLine, 4);
+      let profileCategoryName = profileCategory._groups[0][0].innerText;
+      let profileLabel = getLabelForCategory(profileCategory, profileCategoryName);
+      renderSublabelValueForLabel("newfeatures", profileLabel, profileCategoryName, 0);
+
+      let specsLine = getNewLineForLevel(chart, data);
+      let specsCategory = getCategoryForLine(specsLine, 3);
+      let specsCategoryName = specsCategory._groups[0][0].innerText;
+      let specsLabel = getLabelForCategory(specsCategory, specsCategoryName);
+      renderSublabelValueForLabel("workload", specsLabel, specsCategoryName, 0);
+    }
+  </script>
+</head>
+<body>
+
+</body>
+<script>
+  document.addEventListener("DOMContentLoaded", function (event) {
+    let jsonOutput = [{}];
+
+    function iterate(obj) {
+      for (let property in obj) {
+        if (obj.hasOwnProperty(property)) {
+          jsonOutput[0][property] = obj[property];
+        }
+      }
+    }
+
+    iterate(job);
+    draw(jsonOutput);
+  });
+</script>
 </html>
