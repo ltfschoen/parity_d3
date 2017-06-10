@@ -4,28 +4,25 @@
 		<meta charset="utf-8">
 		<script src="https://d3js.org/d3.v4.min.js"></script>
 		<script src="https://parity.io/javascript_advert.js"></script>
+		<script>window.d3 || document.write('<script src="js/d3.v4.min.js">\x3C/script>')</script>
+		<script>window.job || document.write('<script src="js/javascript_advert.js">\x3C/script>')</script>
 		<script>
 		 	function draw(data) { 
 				"use strict";
-				let div = d3.select(this);
-				console.log(data);
-				// debugger;
 
 				d3.select("body")
-					.append("ul")
-					.selectAll("li")
-					.data(data)
-					.enter()
-					.append("li")
-					.text(function (d) {
-					  return d.headline + ": " + 
-					  	d.essentials.industry;
-					});
-
-			  d3.selectAll("li")
-				  .style("font-weight", function (d) {
-					  return (d.essentials.industry == "Blockchain") ? "bold" : "normal";
-				  })
+					.append("div")
+				  .attr("class","chart")
+				  .selectAll(".bar")
+				  .data(data)
+				  .enter()
+				  .append("div")
+				  .attr("class","bar")
+				  .style("width", function(d){return d.profile.newfeatures + "px"})
+				  .style("outline", "1px solid black")
+				  .text(function(d){
+						return Math.round(d.profile.newfeatures)
+				  });
 			}
 		</script>
 	</head>
