@@ -2,6 +2,32 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<style>
+			div.chart{
+				font-family: sans-serif;
+				font-size: 0.7em;
+			}
+			div.label {
+				height: 3em;
+				line-height: 3em;
+				padding-right: 1em;
+				margin-bottom: 2px;
+				float: left;
+				width: 20em;
+				text-align: right;
+			}
+			div.bar {
+				background-color: DarkRed;
+				color: white;
+				height: 3em;
+				line-height:3em;
+				padding-right:1em;
+				margin-bottom:2px;
+				text-align:right;
+				outline: 1px solid black;
+				display: inline-block;
+			}
+		</style>
 		<script src="https://d3js.org/d3.v4.min.js"></script>
 		<script src="https://parity.io/javascript_advert.js"></script>
 		<script>window.d3 || document.write('<script src="js/d3.v4.min.js">\x3C/script>')</script>
@@ -13,16 +39,22 @@
 				d3.select("body")
 					.append("div")
 				  .attr("class","chart")
-				  .selectAll(".bar")
+				  .selectAll(".div.line")
 				  .data(data)
 				  .enter()
 				  .append("div")
+				  .attr("class","line")
+
+			  d3.selectAll("div.line")
+				  .append("div")
+				  .attr("class","label")
+				  .text(function(d){return Object.keys(d.profile)[0]});
+
+			  d3.selectAll("div.line")
+				  .append("div")
 				  .attr("class","bar")
 				  .style("width", function(d){return d.profile.newfeatures + "px"})
-				  .style("outline", "1px solid black")
-				  .text(function(d){
-						return Math.round(d.profile.newfeatures)
-				  });
+				  .text(function(d){ return Math.round(d.profile.newfeatures) });
 			}
 		</script>
 	</head>
@@ -31,9 +63,9 @@
 	</body>
 	<script>
 		document.addEventListener("DOMContentLoaded", function(event) {
-			var jsonOutput = [{}];
+			let jsonOutput = [{}];
 			function iterate(obj) {
-				for (var property in obj) {
+				for (let property in obj) {
 			    if (obj.hasOwnProperty(property)) {
 		        jsonOutput[0][property] = obj[property];
 			    }
