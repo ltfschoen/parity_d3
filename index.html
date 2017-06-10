@@ -130,7 +130,7 @@
           return Object.keys(d[categoryName])[keyIndex];
         })
 
-      if (isObject(propertyValue) && !isArray()) {
+      if (isObject(propertyValue) && !isArray(propertyValue)) {
         return
       }
       return processRender(label, propertyValue, propertyName);
@@ -208,22 +208,20 @@
       let essentialsCategory = getCategoryForLine(essentialsLine, 1);
       let essentialsCategoryName = essentialsCategory._groups[0][0].innerText;
       let essentialsLabel = getLabelForCategory(essentialsCategory, essentialsCategoryName);
-      renderSublabelValueForLabel("locations", data, essentialsLabel, essentialsCategoryName, 0);
-      renderSublabelValueForLabel("employment", data, essentialsLabel, essentialsCategoryName, 1);
-      renderSublabelValueForLabel("startdate", data, essentialsLabel, essentialsCategoryName, 2);
-      renderSublabelValueForLabel("salary", data, essentialsLabel, essentialsCategoryName, 3);
-      let essentialsSalarySublabel = getSublabelOfLabelForCategory(essentialsLabel, essentialsCategory, essentialsCategoryName);
-      renderSubSublabelValueForLabel("salary", "status", data, essentialsSalarySublabel, essentialsLabel, essentialsCategoryName, 3, 0);
-      renderSubSublabelValueForLabel("salary", "interval", data, essentialsSalarySublabel, essentialsLabel, essentialsCategoryName, 3, 1);
-      renderSubSublabelValueForLabel("salary", "currency", data, essentialsSalarySublabel, essentialsLabel, essentialsCategoryName, 3, 2);
-      renderSubSublabelValueForLabel("salary", "amount", data, essentialsSalarySublabel, essentialsLabel, essentialsCategoryName, 3, 3);
-      renderSubSublabelValueForLabel("salary", "stockoptions", data, essentialsSalarySublabel, essentialsLabel, essentialsCategoryName, 3, 4);
-      renderSublabelValueForLabel("industry", data, essentialsLabel, essentialsCategoryName, 4);
-      renderSublabelValueForLabel("companysize", data, essentialsLabel, essentialsCategoryName, 5);
-      renderSublabelValueForLabel("teamsize", data, essentialsLabel, essentialsCategoryName, 6);
-      let essentialsTeamsizeSublabel = getSublabelOfLabelForCategory(essentialsLabel, essentialsCategory, essentialsCategoryName);
-      renderSubSublabelValueForLabel("teamsize", "min", data, essentialsTeamsizeSublabel, essentialsLabel, essentialsCategoryName, 6, 0);
-      renderSubSublabelValueForLabel("teamsize", "max", data, essentialsTeamsizeSublabel, essentialsLabel, essentialsCategoryName, 6, 1);
+      let essentialsKey = data[0][essentialsCategoryName];
+      let i1 = 0;
+      for (let k1 in essentialsKey) {
+        renderSublabelValueForLabel(k1, data, essentialsLabel, essentialsCategoryName, i1);
+        if (isObject(essentialsKey[k1]) && !isArray(essentialsKey[k1])) {
+          let i2 = 0;
+          for (let k2 in essentialsKey[k1]) {
+            let sublabel = getSublabelOfLabelForCategory(essentialsLabel, essentialsCategory, essentialsCategoryName);
+            renderSubSublabelValueForLabel(k1, k2, data, sublabel, essentialsLabel, essentialsCategoryName, i1, i2);
+            i2++;
+          }
+        }
+        i1++;
+      }
 
       let methodologyLine = getNewLineForLevel(chart, data);
       let methodologyCategory = getCategoryForLine(methodologyLine, 2);
