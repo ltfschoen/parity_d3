@@ -13,6 +13,9 @@
 				line-height: 3em;
 				margin-bottom: 2px;
 			}
+			div.category-text-value {
+				margin-left: 40px;
+			}
 			span.label-wrapper {
 				width: 100px;
 				display: inline-block;
@@ -23,10 +26,10 @@
 			div.bar {
 				margin-left: 20px;
 				background-color: DarkRed;
+				border-radius: 20px;
 				color: white;
 				padding-right: 1em;
 				text-align: right;
-				outline: 1px solid black;
 				display: inline-block;
 			}
 		</style>
@@ -54,7 +57,13 @@
 					.attr("class", "label")
 			}
 
-			function renderPropertyForLabel(propertyName, label, categoryName, keyIndex) {
+			function renderValueForCategory(category, categoryName) {
+				return category.append("div")
+					.attr("class", "category-text-value")
+					.text(function(d) { return d[categoryName] })
+			}
+
+			function renderSublabelValueForLabel(propertyName, label, categoryName, keyIndex) {
 				let labelSpan = label.append("span")
 					.attr("class", "label-wrapper")
 					.text(function(d) { return Object.keys(d[categoryName])[keyIndex] })
@@ -72,18 +81,23 @@
 					.append("div")
 				  .attr("class", "chart")
 
+				let headlineLine = getNewLineForLevel(chart, data);
+			  let headlineCategory = getCategoryForLine(headlineLine, 0);
+			  let headlineCategoryName = headlineCategory._groups[0][0].innerText;
+			  renderValueForCategory(headlineCategory, headlineCategoryName);
+
 				let profileLine = getNewLineForLevel(chart, data);
 				let profileCategory = getCategoryForLine(profileLine, 4);
 				let profileCategoryName = profileCategory._groups[0][0].innerText;
 				let profileLabel = getLabelForCategory(profileCategory, profileCategoryName);
-				renderPropertyForLabel("newfeatures", profileLabel, profileCategoryName, 0);
+				renderSublabelValueForLabel("newfeatures", profileLabel, profileCategoryName, 0);
 
 
 			  let specsLine = getNewLineForLevel(chart, data);
 				let specsCategory = getCategoryForLine(specsLine, 3);
 			  let specsCategoryName = specsCategory._groups[0][0].innerText;
 				let specsLabel = getLabelForCategory(specsCategory, specsCategoryName);
-			  renderPropertyForLabel("workload", specsLabel, specsCategoryName, 0);
+			  renderSublabelValueForLabel("workload", specsLabel, specsCategoryName, 0);
 
 			}
 		</script>
