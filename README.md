@@ -1,4 +1,2 @@
-* Run
-	```
-	npm start
-	```
+* Install dependencies `npm install`
+* Run `npm start`
