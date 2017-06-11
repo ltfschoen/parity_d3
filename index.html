@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./vendor/font_awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
-  <link rel="stylesheet" media="all" href="./node_modules/mocha/mocha.css">
   <link rel="stylesheet" href="./css/styles.css">
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://parity.io/javascript_advert.js"></script>
@@ -16,9 +15,6 @@
   <script src="./node_modules/chai/chai.js"></script>
   <script src="./js/utils.js"></script>
   <script src="./js/main.js"></script>
-  <script>mocha.setup('bdd')</script>
-  <script src="test/test_main.js"></script>
-  <script>mocha.run();</script>
 
 </head>
 <body></body>
@@ -33,7 +29,7 @@
       }
     }
     iterate(job);
-    let jobInstance = new Job();
+    let jobInstance = new jobClass.Job();
     jobInstance.draw(jsonOutput);
   });
 </script>

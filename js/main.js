@@ -244,7 +244,7 @@
     }
   }
 
-  exports.job = {
+  exports.jobClass = {
     Job: Job
   }
 
