@@ -3,6 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--<link rel="stylesheet" type="text/css"-->
+        <!--href="./node_modules/foundation-sites/dist/css/foundation.css">-->
+  <!-- Compressed CSS -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css" integrity="sha256-itWEYdFWzZPBG78bJOOiQIn06QCgN/F0wMDcC4nOhxY=" crossorigin="anonymous" />
+
   <link rel="stylesheet" href="./vendor/font_awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
   <link rel="stylesheet" href="./css/styles.css">
@@ -11,13 +18,34 @@
   <script>window.d3 || document.write('<script src="./vendor/d3/js/d3.v4.min.js">\x3C/script>')</script>
   <script>window.job || document.write('<script src="./lib/js/javascript_advert.js">\x3C/script>')</script>
   <script src="./node_modules/moment/min/moment.min.js"></script>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+
+  <!--<script src="./node_modules/foundation-sites/dist/js/foundation.js"></script>-->
+  <!-- Compressed JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/js/foundation.min.js" integrity="sha256-Nd2xznOkrE9HkrAMi4xWy/hXkQraXioBg9iYsBrcFrs=" crossorigin="anonymous"></script>
+
   <script src="./node_modules/mocha/mocha.js"></script>
   <script src="./node_modules/chai/chai.js"></script>
   <script src="./js/utils.js"></script>
   <script src="./js/main.js"></script>
 
 </head>
-<body></body>
+<body>
+  <div class="row">
+    <div class="columns">
+      <ul class="accordion"
+          data-accordion
+          data-deep-link="true"
+          data-update-history="true"
+          data-deep-link-smudge="true"
+          data-deep-link-smudge="500"
+          data-multi-expand="true"
+          data-allow-all-closed="true"
+          id="deeplinked-accordion">
+      </ul>
+    </div>
+  </div>
+</body>
 <script>
   document.addEventListener("DOMContentLoaded", function (event) {
     let jsonOutput = [{}];

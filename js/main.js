@@ -18,12 +18,25 @@
     isUnfitableLabel: function(propertyName, parentName) {
       return (this.unfitableLabels.indexOf(propertyName) != -1 || this.unfitableLabels.indexOf(parentName) != -1);;
     },
-    getNewLineForLevel: function(level, data) {
-      return level.selectAll(".div.line")
+    getNewLineForLevel: function(level, data, categoryName) {
+      let liLevel = level.append("li")
+        .attr("class", "accordion-item " + (categoryName == "headline" ? "is-active" : ""))
+        .attr("data-class", "data-accordion-item")
+
+      liLevel.append("a")
+        .attr("href", "#" + categoryName)
+        .attr("class", "accordion-title")
+        .text(function (d) {
+          return jobUtils.toHumanisedAll(categoryName);
+        })
+
+      return liLevel.selectAll(".div.line")
         .data(data)
         .enter()
         .append("div")
-        .attr("class", "line")
+        .attr("data-class", "data-tab-content")
+        .attr("class", "line accordion-content")
+        .attr("id", categoryName)
     },
     getCategoryForLine: function(line, keyIndex) {
       return line.append("div")
@@ -223,15 +236,16 @@
         })
     },
     draw: function(data) {
-      let chart = d3.select("body")
-        .append("div")
-        .attr("class", "chart")
+      // let chart = d3.select("body")
+      //   .append("div")
+      //   .attr("class", "chart")
+      let accordion = d3.select("ul")
 
       let i = 0;
       for (let categoryKey in data[0]) {
-        let line = this.getNewLineForLevel(chart, data);
+        let categoryName = categoryKey; // category._groups[0][0].innerText.toLowerCase();
+        let line = this.getNewLineForLevel(accordion, data, categoryName);
         let category = this.getCategoryForLine(line, i);
-        let categoryName = category._groups[0][0].innerText.toLowerCase();
         let key = data[0][categoryName];
         if (jobUtils.isObject(key) && !jobUtils.isArray(key)) {
           let label = this.getLabelForCategory(category, categoryName);

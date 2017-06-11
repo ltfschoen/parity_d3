@@ -4,6 +4,7 @@
   "description": "",
   "main": "",
   "dependencies": {
+    "foundation-sites": "^6.3.1",
     "http-server": "^0.10.0",
     "moment": "^2.18.1"
   },
