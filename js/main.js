@@ -29,7 +29,7 @@
       return line.append("div")
         .attr("class", "category")
         .text(function (d) {
-          return Object.keys(d)[keyIndex]
+          return jobUtils.toHumanisedFirst(Object.keys(d)[keyIndex]);
         })
     },
     getLabelForCategory: function(category, categoryName) {
@@ -44,7 +44,7 @@
       let i1 = 0;
       for (let k1 in categoryKey) {
         this.renderSublabelValueForLabel(k1, data, categoryLabel, categoryName, i1);
-        if (isObject(categoryKey[k1]) && !isArray(categoryKey[k1])) {
+        if (jobUtils.isObject(categoryKey[k1]) && !jobUtils.isArray(categoryKey[k1])) {
           let i2 = 0;
           for (let k2 in categoryKey[k1]) {
             let sublabel = this.getSublabelOfLabelForCategory(categoryLabel, category, categoryName);
@@ -63,9 +63,9 @@
         .attr("class", "category-text-value")
         .text(function (d) {
           if (typeof d[categoryName] ===  "string") {
-            return d[categoryName].split(',').join(', ');
+            return jobUtils.toHumanisedFirst(d[categoryName].split(',').join(', '));
           } else if (typeof d[categoryName] ===  "object") {
-            return d[categoryName].join(', ');
+            return jobUtils.toHumanisedFirst(d[categoryName].join(', '));
           }
         })
     },
@@ -77,10 +77,10 @@
       label.append("span")
         .attr("class", "label-wrapper")
         .text(function (d) {
-          return Object.keys(d[categoryName])[keyIndex];
+          return jobUtils.toHumanisedFirst(Object.keys(d[categoryName])[keyIndex]);
         })
 
-      if (isObject(propertyValue) && !isArray(propertyValue)) {
+      if (jobUtils.isObject(propertyValue) && !jobUtils.isArray(propertyValue)) {
         return
       }
       return this.processRender(this, label, propertyValue, propertyName, categoryName);
@@ -93,7 +93,7 @@
       subLabel.append("span")
         .attr("class", "sub-label-wrapper")
         .text(function (d) {
-          return Object.keys(d[categoryName][propertyName])[subKeyIndex];
+          return jobUtils.toHumanisedFirst(Object.keys(d[categoryName][propertyName])[subKeyIndex]);
         })
 
       return this.processRender(this, subLabel, subPropertyValue, subPropertyName, propertyName);
@@ -195,10 +195,10 @@
                   });
               }
             } else {
-              return propertyValue.split(',').join(', ');
+              return jobUtils.toHumanisedFirst(propertyValue.split(',').join(', '));
             }
           } else if (typeof propertyValue === "object") {
-            return propertyValue.join(', ');
+            return jobUtils.toHumanisedAll(propertyValue.join(', '));
           } else if (typeof propertyValue === "boolean") {
             if (propertyValue == true) {
               label.append("text")
@@ -231,9 +231,9 @@
       for (let categoryKey in data[0]) {
         let line = this.getNewLineForLevel(chart, data);
         let category = this.getCategoryForLine(line, i);
-        let categoryName = category._groups[0][0].innerText;
+        let categoryName = category._groups[0][0].innerText.toLowerCase();
         let key = data[0][categoryName];
-        if (isObject(key) && !isArray(key)) {
+        if (jobUtils.isObject(key) && !jobUtils.isArray(key)) {
           let label = this.getLabelForCategory(category, categoryName);
           this.renderLevelsForCategory(data, key, label, category, categoryName);
         } else {
