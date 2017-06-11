@@ -232,9 +232,9 @@
         let line = this.getNewLineForLevel(chart, data);
         let category = this.getCategoryForLine(line, i);
         let categoryName = category._groups[0][0].innerText;
-        let label = this.getLabelForCategory(category, categoryName);
         let key = data[0][categoryName];
         if (isObject(key) && !isArray(key)) {
+          let label = this.getLabelForCategory(category, categoryName);
           this.renderLevelsForCategory(data, key, label, category, categoryName);
         } else {
           this.renderValueForCategory(category, categoryName);
