@@ -43,7 +43,9 @@ div.label {
 div.sub-label {
   color: White;
   background-color: LightGrey;
-  padding: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 10px;
   border-radius: 10px;
   margin-left: 60px;
 }
